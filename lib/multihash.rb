@@ -1,2 +1,0 @@
-class MultiHash
-end

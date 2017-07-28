@@ -1,0 +1,2 @@
+class SurHash
+end

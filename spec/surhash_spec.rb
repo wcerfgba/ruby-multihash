@@ -1,12 +1,12 @@
-require './lib/multihash'
+require './lib/surhash'
 
 # one day...
 # require 'faker'
 
-RSpec.describe MultiHash do
+RSpec.describe SurHash do
   describe '.[]' do
-    it 'constructs a multihash from a complex literal' do
-      actual = MultiHash[
+    it 'constructs a surhash from a complex literal' do
+      actual = SurHash[
         'A'               =>  1,
         'B'               =>  2,
         [ 'C', 'D' ]      =>  3,
@@ -38,8 +38,8 @@ RSpec.describe MultiHash do
     end
   end
   describe '.empty' do
-    it 'returns an empty MultiHash' do
-      actual = MultiHash.empty
+    it 'returns an empty surhash' do
+      actual = SurHash.empty
       
       actual.should be_empty
       actual.keys.should be_empty
