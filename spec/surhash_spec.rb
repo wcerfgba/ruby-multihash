@@ -1,5 +1,5 @@
 require './lib/surhash'
-
+require './spec/spec_helper'
 
 # Contexts
 
