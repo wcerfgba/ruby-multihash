@@ -38,14 +38,14 @@ end
 RSpec.describe SurHash do
   describe '.[]' do
     include_context 'complex'
-    
+
     it 'constructs a surhash from a complex literal' do
       subject.should_not be_empty
       subject.size.should eq 11
       subject.keys.size.should eq 11
       subject.values.size.should eq 7
-      subject.keys.should eq 'A'..'K'
-      subject.values.should eq 1..7
+      subject.keys.should eq ('A'..'K').to_a
+      subject.values.should eq (1..7).to_a
       subject.entries.should eq [
         [ 'A', 1 ],
         [ 'B', 2 ],
