@@ -8,16 +8,19 @@ RSpec.shared_context 'empty' do
     SurHash.empty
   end
 end
+
 RSpec.shared_context 'one-to-one' do
   subject do
     SurHash[ 'A'  =>  1 ]
   end
 end
+
 RSpec.shared_context 'many-to-one' do
   subject do
     SurHash[  [ 'A', 'B', 'C' ] =>  1 ]
   end
 end
+
 RSpec.shared_context 'complex' do
   subject do
     SurHash[
@@ -33,9 +36,11 @@ RSpec.shared_context 'complex' do
 end
 
 
+
 # Examples
 
 RSpec.describe SurHash do
+
   describe '.[]' do
     include_context 'complex'
 
@@ -61,6 +66,7 @@ RSpec.describe SurHash do
       ]
     end
   end
+
   describe '.empty' do
     include_context 'empty'
 
@@ -70,7 +76,9 @@ RSpec.describe SurHash do
       subject.values.should be_empty
     end
   end
-  describe '.empty?' do
+
+  describe '#empty?' do
+
     context 'empty' do
       include_context 'empty'
 
@@ -78,6 +86,7 @@ RSpec.describe SurHash do
         subject.empty?.should be true
       end
     end
+
     context 'not empty'
       include_context 'many-to-one'
 
@@ -86,19 +95,121 @@ RSpec.describe SurHash do
       end
     end
   end
+
   describe '#size' do
+
     context 'empty' do
       include_context 'empty'
-      it 'should return 0 if the surhash is empty' do
+
+      it 'returns 0 if the surhash is empty' do
         subject.size.should eq 0
       end
     end
+
+    context 'not empty' do
+      include_context 'many-to-one'
+
+      it 'returns >= 0 if the surhash is not empty' do
+        subject.size.should be > 0
+      end
+    end
+  end
+
   describe '#keys' do
+
+    context 'empty' do
+      include_context 'empty'
+
+      it 'returns an empty array if the surhash is empty' do
+        subject.empty?.should be true
+        subject.keys.empty?.should be true
+      end
+    end
+
+    context 'not empty' do
+      include_context 'many-to-one'
+
+      it 'returns a non-empty array of all keys if the surhash is not empty' do
+        subject.empty?.should be false
+        subject.keys.empty?.should be false
+        subject.keys.should include 'A'
+        subject.keys.should include 'B'
+        subject.keys.should include 'C'
+        subject.keys.should_not include 'D'
+      end
+    end
   end
+
   describe '#values' do
+
+    context 'empty' do
+      include_context 'empty'
+
+      it 'returns an empty array if the surhash is empty' do
+        subject.empty?.should be true
+        subject.values.empty?.should be true
+      end
+    end
+
+    context 'not empty' do
+      include_context 'complex'
+
+      it 'returns a non-empty array of all values if the surhash is not empty' do
+        subject.empty?.should be false
+        subject.values.empty?.should be false
+        subject.values.should include 1
+        subject.values.should include 2
+        subject.values.should include 3
+        subject.values.should include 4
+        subject.values.should include 5
+        subject.values.should include 6
+        subject.values.should include 7
+        subject.values.should_not include 8
+      end
+    end
   end
+
   describe '#get' do
+
+    context 'empty' do
+      include_context 'empty'
+
+      it 'returns nil if surhash is empty' do
+        subject.empty?.should be true
+        subject.get('test').should be nil
+      end
+    end
+
+    context 'not empty' do
+      include_context 'one-to-one'
+
+      it 'returns nil if the key is not present' do
+        subject.empty?.should be false
+        subject.get('B').should be nil
+      end
+
+      it 'returns the value if the key is present' do
+        subject.empty?.should be false
+        subject.get('A').should be 1
+      end
+    end
   end
+
   describe '#==' do
+
+    context 'not empty' do
+      include_context 'complex'
+
+      it 'returns true if two surhashes have exactly the same entries' do
+        other = subject.clone
+
+        subject.==(other).should be true
+      end
+
+      it 'returns false if two surhashes have different entries' do
+        other = SurHash[  'A' =>  1 ]
+
+        subject.==(other).should be false
+      end
   end
 end

@@ -88,4 +88,16 @@ class SurHash
       [key, @value_hash[canonical_key]]
     }
   end
+
+  def [](key)
+    self.get(key)
+  end
+
+  def get(key)
+    @value_hash[ @key_hash[ key ] ]
+  end
+
+  def ==(other)
+    self.entries == other.entries
+  end
 end
